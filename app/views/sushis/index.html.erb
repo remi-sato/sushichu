@@ -1,1 +1,26 @@
-<h1>一覧画面</h1>
+<div class="container">
+  <h1>メニュー一覧</h1>
+
+  <div class="row row-cols-md-3 g-3">
+  
+    <% @sushis.each do |sushi| %>
+      <div class="col">
+        <div class="card h-100">
+          <% if sushi.image.attached? %>
+            <%= image_tag sushi.image, class: "card-img-top" %>
+          <% end %>
+    
+          <div class="card-body">
+            <h2 class="card-title">
+              <%= sushi.name %>
+            </h2>
+       
+            <p class="card-text">
+              <%= sushi.price %>円
+            </p>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
