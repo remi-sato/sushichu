@@ -10,7 +10,11 @@
       <h1 class="mb-3"><%= @sushi.name %></h1>
       <p class="fs-4 fw-bold"><%= @sushi.price %>円</p>
       <p class="mb-4"><%= @sushi.description %></p>
-      <%= link_to "一覧へ戻る", sushis_path, class: "btn btn-outline-secondary" %>
+
+      <div class="d-flex gap-2">
+        <%= link_to "一覧へ戻る", sushis_path, class: "btn btn-outline-secondary" %>
+        <%= button_to "カートへ追加", order_items_path, params: { sushi_id: @sushi.id }, method: :post, class: "btn btn-outline-primary" %>
+      </div>
     </div>
   </div>
 </div>

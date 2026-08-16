@@ -1,0 +1,49 @@
+<div class="container py-4">
+  <h1>カート</h1>
+
+  <% if @order_items.any? %>
+    <% @order_items.each do |order_item| %>
+      <div class="row align-items-center border-bottom py-3">
+        <div class="col-3">
+          <%= order_item.sushi.name %>
+        </div>
+
+        <div class="col-2">
+          <%= order_item.sushi.price %>円
+        </div>
+
+        <div class="col-2">
+          <%= form_with model: order_item, class: "d-flex gap-2" do |form| %>
+            <%= form.number_field :quantity, min: 1, class: "form-control" %>
+
+            <%= form.submit "変更", class: "btn btn-outline-primary" %>
+          <% end %>
+        </div>
+
+        <div class="col-2">
+          小計：<%= order_item.sushi.price * order_item.quantity %>円
+        </div>
+
+        <div class="col-2">
+          <%= button_to "削除",
+                order_item_path(order_item),
+                method: :delete,
+                class: "btn btn-outline-danger",
+                data: { turbo_confirm: "カートから削除しますか？" } %>
+        </div>
+      </div>
+    <% end %>
+
+    <div class="text-end mt-4">
+      <p class="fs-4 fw-bold">
+        合計：<%= @total_price %>円
+      </p>
+    </div>
+  <% else %>
+    <p>カートに商品がありません。</p>
+  <% end %>
+
+  <%= link_to "メニューに戻る",
+        sushis_path,
+        class: "btn btn-outline-secondary mt-4" %>
+</div>
