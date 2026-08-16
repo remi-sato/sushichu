@@ -31,4 +31,31 @@ class OrderItemsController < ApplicationController
     # 寿司詳細画面へ戻る
     redirect_to sushi_path(sushi), notice: "カートに追加しました"
   end
+
+  # 数量変更
+  def update
+    order = Order.find_by!(id: session[:order_id], status: :cart)
+    order_item = order.order_items.find(params[:id])
+
+    if order_item.update(order_item_params)
+      redirect_to cart_path, notice: "数量を変更しました"
+    else
+      redirect_to cart_path, alert: "数量を変更できませんでした"
+    end
+  end
+
+  def destroy
+    order = Order.find_by!(id: session[:order_id], status: :cart)
+    order_item = order.order_items.find(params[:id])
+
+    order_item.destroy!
+
+    redirect_to cart_path, notice: "カートから削除しました"
+  end
+
+  private
+
+  def order_item_params
+    params.require(:order_item).permit(:quantity)
+  end
 end
