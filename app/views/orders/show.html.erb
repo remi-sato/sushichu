@@ -38,6 +38,8 @@
       <p class="fs-4 fw-bold">
         合計：<%= @total_price %>円
       </p>
+
+      <%= button_to "注文を確定する", cart_path, method: :patch, class: "btn btn-success", data: { turbo_confirm: "注文を確定しますか？" } %>
     </div>
   <% else %>
     <p>カートに商品がありません。</p>
