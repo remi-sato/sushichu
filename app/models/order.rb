@@ -4,7 +4,7 @@ class Order < ApplicationRecord
 
   enum :status, {
     cart: 0,
-    orderd: 1,
+    ordered: 1,
     preparing: 2,
     completed: 3
   }

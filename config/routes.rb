@@ -3,6 +3,6 @@ Rails.application.routes.draw do
   
   resources :sushis, only: [:index, :show]
   resources :order_items, only: [:create, :update, :destroy]
-  resource :cart, only: [:show], controller: :orders
+  resource :cart, only: [:show, :update], controller: :orders
   
 end
