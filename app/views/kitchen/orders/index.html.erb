@@ -1,0 +1,56 @@
+<div class="container py-4">
+  <h1 class="mb-4">注文一覧</h1>
+
+  <% if @orders.any? %>
+    <div class="row row-cols-1 row-cols-md-2 g-4">
+      <% @orders.each do |order| %>
+        <div class="col">
+          <div class="card h-100">
+            <div class="card-header d-flex justify-content-between">
+              <span>注文番号：<%= order.id %></span>
+
+              <% if order.ordered? %>
+                <span class="badge text-bg-danger">注文済み</span>
+              <% else %>
+                <span class="badge text-bg-warning">準備中</span>
+              <% end %>
+            </div>
+
+            <div class="card-body">
+              <p>
+                注文時刻：
+                <%= order.created_at.strftime("%H:%M") %>
+              </p>
+
+              <ul class="list-group list-group-flush">
+                <% order.order_items.each do |order_item| %>
+                  <li class="list-group-item d-flex justify-content-between">
+                    <span><%= order_item.sushi.name %></span>
+                    <span><%= order_item.quantity %>個</span>
+                  </li>
+                <% end %>
+              </ul>
+
+              <div class="mt-3">
+                <% if order.ordered? %>
+                  <%= button_to "調理を開始する",
+                      kitchen_order_path(order),
+                      method: :patch,
+                      class: "btn btn-warning w-100" %>
+                <% elsif order.preparing? %>
+                  <%= button_to "提供を完了する",
+                      kitchen_order_path(order),
+                      method: :patch,
+                      class: "btn btn-success w-100",
+                      data: { turbo_confirm: "提供完了にしますか？" } %>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <p>対応中の注文はありません。</p>
+  <% end %>
+</div>
