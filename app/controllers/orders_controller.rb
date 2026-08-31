@@ -1,4 +1,23 @@
 class OrdersController < ApplicationController
+  def index
+    order_ids = session[:ordered_order_ids] || []
+
+    @order_items = OrderItem
+      .joins(:order)
+      .where(
+        orders: {
+          id: order_ids,
+          status: [:ordered, :preparing, :completed]
+        }
+      )
+      .includes(:sushi)
+      .order(created_at: :asc)
+
+    @total_price = @order_items.sum do |order_item|
+      order_item.sushi.price * order_item.quantity
+  end
+end
+
   def show
     @order = Order.find_by(id: session[:order_id], status: :cart)
 
@@ -20,6 +39,10 @@ class OrdersController < ApplicationController
       return
     end
     order.update!(status: :ordered)
+
+    session[:ordered_order_ids] ||= []
+    session[:ordered_order_ids] << order.id
+
     session.delete(:order_id)
     redirect_to root_path, notice: "注文を確定しました"
   end
