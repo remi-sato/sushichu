@@ -1,0 +1,50 @@
+<div class="container py-4">
+  <h1 class="mb-4">注文履歴</h1>
+
+  <% if @order_items.any? %>
+    <div class="table-responsive">
+      <table class="table align-middle">
+        <thead>
+          <tr>
+            <th>商品</th>
+            <th>数量</th>
+            <th>金額</th>
+            <th class="text-end">ステータス</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <% @order_items.each do |order_item| %>
+            <tr>
+              <td><%= order_item.sushi.name %></td>
+
+              <td>
+                <%= order_item.quantity %>個
+              </td>
+
+              <td>
+                <%= order_item.sushi.price * order_item.quantity %>円
+              </td>
+
+              <td class="text-end">
+                <% if order_item.completed? %>
+                  <span class="badge text-bg-success">提供済</span>
+                <% else %>
+                  <span class="badge text-bg-warning">注文済</span>
+                <% end %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="border-top mt-4 pt-3 text-end">
+      <p class="fs-4 fw-bold">
+        合計：<%= @total_price %>円
+      </p>
+    </div>
+  <% else %>
+    <p class="text-muted">注文履歴はありません。</p>
+  <% end %>
+</div>
